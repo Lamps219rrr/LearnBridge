@@ -1,0 +1,727 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearnBridge AI | Inclusive Learning</title>
+
+<style>
+:root {
+  --green:#087f5b;
+  --light:#e8f7ef;
+  --dark:#18352c;
+  --muted:#718078;
+  --white:#ffffff;
+  --bg:#f5f8f6;
+  --orange:#ffb454;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--dark);
+}
+button,input,select,textarea {font:inherit}
+button {cursor:pointer}
+.app {display:flex;min-height:100vh}
+.sidebar {
+  width:245px;background:#fff;padding:25px 18px;
+  border-right:1px solid #e6eee9;flex-shrink:0;
+}
+.logo {font-size:22px;font-weight:800;color:var(--green)}
+.logo span {color:#ff9e45}
+.tagline {font-size:11px;color:var(--muted);margin:6px 0 35px}
+.nav-title {font-size:10px;color:#98a69e;margin:20px 10px 10px}
+.nav button {
+  display:block;width:100%;padding:13px 12px;
+  border:0;background:transparent;text-align:left;
+  border-radius:10px;color:#52645b;margin:4px 0;
+}
+.nav button.active,.nav button:hover {
+  background:var(--light);color:var(--green);font-weight:700;
+}
+.main {flex:1;min-width:0;padding:25px 4%}
+.topbar {
+  display:flex;justify-content:space-between;
+  align-items:center;gap:15px;margin-bottom:25px;flex-wrap:wrap;
+}
+.topbar h2 {margin:0;font-size:22px}
+.small {font-size:12px;color:var(--muted)}
+select,input,textarea {
+  border:1px solid #dce7e0;border-radius:10px;
+  padding:11px;background:white;color:var(--dark);
+  width:100%;outline-color:var(--green);
+}
+.btn {
+  background:var(--green);color:white;border:0;
+  border-radius:10px;padding:12px 17px;font-weight:700;
+}
+.btn.secondary {background:var(--light);color:var(--green)}
+.btn.orange {background:var(--orange);color:#49300c}
+.btn:disabled {opacity:.5;cursor:not-allowed}
+.hero {
+  background:linear-gradient(120deg,#075b46,#11966b);
+  border-radius:20px;padding:28px;color:white;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:20px;flex-wrap:wrap;margin-bottom:22px;
+}
+.hero h1 {font-size:28px;margin:8px 0}
+.hero p {color:#e0f5e9;max-width:490px;line-height:1.6}
+.hero-icon {font-size:70px}
+.grid {
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;margin-bottom:22px;
+}
+.card {
+  background:white;padding:20px;border-radius:15px;
+  border:1px solid #e9f0eb;margin-bottom:16px;
+}
+.stat {font-size:28px;font-weight:800;color:var(--green);margin-top:10px}
+.card h3 {margin:0 0 12px;font-size:16px}
+.card p {color:var(--muted);font-size:13px;line-height:1.6}
+.icon {font-size:27px;margin-bottom:12px}
+.section-title {margin:25px 0 15px;font-size:18px}
+.lesson {
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;border:1px solid #eaf0ec;border-radius:12px;
+  padding:14px;margin:10px 0;background:#fff;
+}
+.lesson h4 {margin:0 0 6px}
+.lesson p {margin:0;font-size:12px;color:var(--muted)}
+.panel {display:none}
+.panel.active {display:block}
+.field {margin:14px 0}
+.field label {display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+textarea {min-height:95px;resize:vertical}
+.answer {
+  display:block;padding:13px;border:1px solid #dce8e0;
+  border-radius:10px;margin:9px 0;background:white;
+  text-align:left;width:100%;
+}
+.answer:hover {border-color:var(--green)}
+.answer.selected {background:var(--light);border-color:var(--green)}
+.notice {
+  padding:13px;background:#fff6e7;color:#75521d;
+  border-radius:10px;font-size:12px;line-height:1.6;
+}
+.progress {height:9px;background:#e8eee9;border-radius:20px;overflow:hidden}
+.progress div {height:100%;background:var(--green);width:0%}
+.chat {
+  background:#f3f8f4;padding:15px;border-radius:12px;
+  line-height:1.7;margin:15px 0;font-size:14px;
+}
+.row {display:flex;gap:10px;align-items:center}
+.row>* {flex:1}
+.badge {
+  background:#e4f6eb;color:var(--green);
+  font-size:11px;padding:5px 9px;border-radius:20px;
+}
+footer {text-align:center;color:#9aa79f;font-size:11px;padding:30px}
+.mobile-menu {display:none}
+@media(max-width:800px) {
+  .sidebar {width:190px}
+  .main {padding:20px}
+  .grid {grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:580px) {
+  .app {display:block}
+  .sidebar {width:100%;padding:15px;border-right:0;
+    border-bottom:1px solid #e5eee8}
+  .tagline {margin-bottom:12px}
+  .nav {display:flex;overflow-x:auto;gap:5px}
+  .nav-title {display:none}
+  .nav button {white-space:nowrap;width:auto;font-size:12px}
+  .main {padding:17px}
+  .grid {grid-template-columns:1fr 1fr;gap:10px}
+  .hero {padding:22px}
+  .hero h1 {font-size:23px}
+  .hero-icon {font-size:40px}
+  .card {padding:14px}
+  .stat {font-size:23px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar">
+  <div class="logo">LearnBridge<span> AI.</span></div>
+  <div class="tagline">Every child deserves to learn.</div>
+
+  <div class="nav-title">MAIN MENU</div>
+  <nav class="nav">
+    <button class="active" onclick="showPanel('home',this)">🏠 Dashboard</button>
+    <button onclick="showPanel('learn',this)">📚 My Learning</button>
+    <button onclick="showPanel('assistant',this)">🤖 AI Assistant</button>
+    <button onclick="showPanel('quiz',this)">✏️ Quizzes</button>
+    <button onclick="showPanel('teacher',this)">👩‍🏫 Teacher Hub</button>
+    <button onclick="showPanel('progress',this)">📊 My Progress</button>
+  </nav>
+  <div class="nav-title">YOUR PROFILE</div>
+  <div class="small">🌱 Inclusive learning for everyone</div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+  <div>
+    <h2 id="pageTitle">Learning Dashboard</h2>
+    <div class="small" id="welcome">Welcome to your learning space!</div>
+  </div>
+  <div style="min-width:140px">
+    <select id="language" onchange="changeLanguage()">
+      <option value="English">🇬🇧 English</option>
+      <option value="Hausa">Hausa</option>
+      <option value="Yoruba">Yoruba</option>
+      <option value="Igbo">Igbo</option>
+    </select>
+  </div>
+</header>
+
+<!-- HOME -->
+<section id="home" class="panel active">
+  <div class="hero">
+    <div>
+      <span class="badge">YOUR LEARNING JOURNEY</span>
+      <h1>Welcome, Young Learner! 🌟</h1>
+      <p>Learn at your own pace, explore new ideas and understand lessons in a language that makes you comfortable.</p>
+      <button class="btn orange" onclick="showPanel('learn')">Start learning →</button>
+    </div>
+    <div class="hero-icon">🎓📖</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="icon">📚</div>
+      <div class="small">Available lessons</div>
+      <div class="stat" id="lessonCount">3</div>
+    </div>
+    <div class="card">
+      <div class="icon">⭐</div>
+      <div class="small">Quiz points</div>
+      <div class="stat" id="points">0</div>
+    </div>
+    <div class="card">
+      <div class="icon">🏆</div>
+      <div class="small">Quizzes completed</div>
+      <div class="stat" id="completed">0</div>
+    </div>
+  </div>
+
+  <h3 class="section-title">Explore your subjects</h3>
+  <div class="grid">
+    <div class="card"><div class="icon">➕</div><h3>Mathematics</h3><p>Numbers, addition and multiplication.</p></div>
+    <div class="card"><div class="icon">🌿</div><h3>Basic Science</h3><p>Discover nature and the world around you.</p></div>
+    <div class="card"><div class="icon">🔤</div><h3>English</h3><p>Build vocabulary and communication skills.</p></div>
+  </div>
+
+  <div class="card">
+    <h3>💚 Our promise</h3>
+    <p>You can learn in your preferred language. You can ask questions, listen to explanations and practise without being afraid of making mistakes.</p>
+  </div>
+</section>
+
+<!-- LEARNING -->
+<section id="learn" class="panel">
+  <h3 class="section-title">Choose what you want to learn</h3>
+  <div id="lessonList"></div>
+
+  <div class="card" id="lessonViewer" style="display:none">
+    <span class="badge" id="lessonSubject"></span>
+    <h2 id="lessonTitle"></h2>
+    <p id="lessonText" style="line-height:1.8"></p>
+    <div class="notice" id="languageNotice"></div>
+    <div class="row" style="margin-top:15px">
+      <button class="btn" onclick="speakLesson()">🔊 Listen</button>
+      <button class="btn secondary" onclick="stopSpeaking()">Stop audio</button>
+    </div>
+  </div>
+</section>
+
+<!-- AI ASSISTANT -->
+<section id="assistant" class="panel">
+  <div class="card">
+    <div class="icon">🤖</div>
+    <h2>Your Learning Assistant</h2>
+    <p>Ask a question about any school subject. You can type your question or use voice input if your browser supports it.</p>
+
+    <div class="field">
+      <label>Your preferred language</label>
+      <select id="assistantLanguage">
+        <option>English</option>
+        <option>Hausa</option>
+        <option>Yoruba</option>
+        <option>Igbo</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Choose your class</label>
+      <select id="classLevel">
+        <option>Primary 1</option>
+        <option>Primary 2</option>
+        <option>Primary 3</option>
+        <option>Primary 4</option>
+        <option>Primary 5</option>
+        <option>Primary 6</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Ask your question</label>
+      <textarea id="question" placeholder="For example: What is multiplication?"></textarea>
+    </div>
+    <div class="row">
+      <button class="btn" onclick="askAI()">Ask LearnBridge AI</button>
+      <button class="btn secondary" onclick="startVoice()">🎙 Speak</button>
+    </div>
+    <div id="aiResponse" class="chat" style="display:none"></div>
+    <button id="listenAnswer" class="btn secondary" style="display:none" onclick="speakAnswer()">🔊 Listen to answer</button>
+  </div>
+  <div class="notice">
+    Prototype mode: the assistant currently uses sample explanations. Connect a verified AI and translation service to enable genuine multilingual conversations.
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="panel">
+  <div class="card">
+    <h2>🧠 Let's test what you know!</h2>
+    <p>Answer these questions and earn points.</p>
+    <div id="quizArea"></div>
+    <div id="quizResult"></div>
+  </div>
+</section>
+
+<!-- TEACHER -->
+<section id="teacher" class="panel">
+  <div class="hero">
+    <div>
+      <span class="badge">EDUCATOR PORTAL</span>
+      <h1>Teacher Hub 👩‍🏫</h1>
+      <p>Prepare lessons, support multilingual pupils and create an inclusive classroom.</p>
+    </div>
+    <div class="hero-icon">📘</div>
+  </div>
+
+  <div class="card">
+    <h3>➕ Create a new lesson</h3>
+    <div class="field">
+      <label>Lesson title</label>
+      <input id="newTitle" placeholder="e.g. Understanding fractions">
+    </div>
+    <div class="field">
+      <label>Subject</label>
+      <select id="newSubject">
+        <option>Mathematics</option>
+        <option>Basic Science</option>
+        <option>English</option>
+        <option>Social Studies</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Class</label>
+      <select id="newClass">
+        <option>Primary 1</option>
+        <option>Primary 2</option>
+        <option>Primary 3</option>
+        <option>Primary 4</option>
+        <option>Primary 5</option>
+        <option>Primary 6</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Lesson explanation in English</label>
+      <textarea id="newContent" placeholder="Write your lesson explanation..."></textarea>
+    </div>
+    <div class="field">
+      <label>Teacher-reviewed Hausa translation</label>
+      <textarea id="hausaContent" placeholder="Add a verified Hausa explanation..."></textarea>
+    </div>
+    <div class="field">
+      <label>Teacher-reviewed Yoruba translation</label>
+      <textarea id="yorubaContent" placeholder="Add a verified Yoruba explanation..."></textarea>
+    </div>
+    <div class="field">
+      <label>Teacher-reviewed Igbo translation</label>
+      <textarea id="igboContent" placeholder="Add a verified Igbo explanation..."></textarea>
+    </div>
+    <button class="btn" onclick="createLesson()">Publish lesson</button>
+    <p id="publishMessage"></p>
+  </div>
+
+  <div class="card">
+    <h3>📊 Classroom overview</h3>
+    <p>Lessons available: <strong id="teacherLessons">3</strong></p>
+    <p>Quiz attempts recorded on this device: <strong id="teacherAttempts">0</strong></p>
+    <p>Remember: learning data should only be accessible to authorised teachers and guardians.</p>
+  </div>
+</section>
+
+<!-- PROGRESS -->
+<section id="progress" class="panel">
+  <div class="card">
+    <h2>🏆 Your learning progress</h2>
+    <p>Every step forward is an achievement!</p>
+    <h3>Quiz completion</h3>
+    <div class="progress"><div id="progressBar"></div></div>
+    <p id="progressText">0 quizzes completed</p>
+    <div class="grid">
+      <div><div class="small">Total points</div><div class="stat" id="progressPoints">0</div></div>
+      <div><div class="small">Completed quizzes</div><div class="stat" id="progressCompleted">0</div></div>
+    </div>
+    <h3>Learning encouragement</h3>
+    <p id="encouragement">Start your first quiz and begin your learning journey!</p>
+  </div>
+</section>
+
+<footer>
+  LearnBridge AI © 2026 · Breaking language barriers, building equal opportunities.
+</footer>
+
+</main>
+</div>
+
+<script>
+// ----------------------------
+// APP DATA
+// ----------------------------
+
+const defaultLessons = [
+ {
+  title:"Understanding Addition",
+  subject:"Mathematics",
+  level:"Primary 2",
+  english:"Addition means putting two or more numbers together to find their total. For example, if you have 2 oranges and someone gives you 3 more oranges, you now have 5 oranges. Therefore, 2 + 3 = 5.",
+  Hausa:"",
+  Yoruba:"",
+  Igbo:""
+ },
+ {
+  title:"Understanding Plants",
+  subject:"Basic Science",
+  level:"Primary 3",
+  english:"Plants are living things. They need water, sunlight, air and nutrients to grow. Their roots absorb water, their stems support them and their leaves help them make food.",
+  Hausa:"",
+  Yoruba:"",
+  Igbo:""
+ },
+ {
+  title:"Learning New Words",
+  subject:"English",
+  level:"Primary 1",
+  english:"Words help us communicate. A noun is a naming word. Examples include a boy, a school, a book and a tree. We use words to share our thoughts and ideas.",
+  Hausa:"",
+  Yoruba:"",
+  Igbo:""
+ }
+];
+
+let lessons = JSON.parse(localStorage.getItem("lb_lessons") || "null") || defaultLessons;
+let points = Number(localStorage.getItem("lb_points") || 0);
+let completed = Number(localStorage.getItem("lb_completed") || 0);
+let currentLesson = null;
+let currentAnswer = "";
+let lastResponse = "";
+
+const quizQuestions = [
+ {
+  q:"What is 2 + 3?",
+  options:["4","5","6"],
+  answer:"5"
+ },
+ {
+  q:"Which part of a plant absorbs water?",
+  options:["Leaves","Flowers","Roots"],
+  answer:"Roots"
+ },
+ {
+  q:"Which of these is a naming word?",
+  options:["School","Run","Quickly"],
+  answer:"School"
+ }
+];
+
+// ----------------------------
+// NAVIGATION
+// ----------------------------
+
+function showPanel(id,button) {
+ document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ if(button) button.classList.add("active");
+ const titles={
+  home:"Learning Dashboard",
+  learn:"My Learning",
+  assistant:"AI Learning Assistant",
+  quiz:"Interactive Quizzes",
+  teacher:"Teacher Hub",
+  progress:"My Progress"
+ };
+ document.getElementById("pageTitle").textContent=titles[id];
+ if(id==="learn") renderLessons();
+ if(id==="quiz") renderQuiz();
+ if(id==="progress") updateProgress();
+ if(id==="teacher") updateTeacher();
+}
+
+// ----------------------------
+// LANGUAGE
+// ----------------------------
+
+function changeLanguage() {
+ const lang=document.getElementById("language").value;
+ document.getElementById("welcome").textContent=
+ "Your preferred learning language: "+lang;
+ renderLessons();
+}
+
+function getLanguage() {
+ return document.getElementById("language").value;
+}
+
+function getLessonContent(lesson) {
+ const lang=getLanguage();
+ if(lang==="English") return lesson.english;
+ return lesson[lang] ||
+ "A teacher-reviewed "+lang+" explanation has not been added to this lesson yet. Please ask your teacher to provide one. You can still read the English explanation below: "+lesson.english;
+}
+
+// ----------------------------
+// LESSONS
+// ----------------------------
+
+function renderLessons() {
+ const list=document.getElementById("lessonList");
+ list.innerHTML="";
+ lessons.forEach((lesson,index)=>{
+  const item=document.createElement("div");
+  item.className="lesson";
+  const info=document.createElement("div");
+  const title=document.createElement("h4");
+  title.textContent=lesson.title;
+  const description=document.createElement("p");
+  description.textContent=lesson.subject+" · "+lesson.level;
+  info.append(title,description);
+  const button=document.createElement("button");
+  button.className="btn secondary";
+  button.textContent="Open lesson";
+  button.onclick=()=>openLesson(index);
+  item.append(info,button);
+  list.append(item);
+ });
+ document.getElementById("lessonCount").textContent=lessons.length;
+}
+
+function openLesson(index) {
+ currentLesson=lessons[index];
+ document.getElementById("lessonViewer").style.display="block";
+ document.getElementById("lessonSubject").textContent=currentLesson.subject;
+ document.getElementById("lessonTitle").textContent=currentLesson.title;
+ document.getElementById("lessonText").textContent=getLessonContent(currentLesson);
+ document.getElementById("languageNotice").textContent=
+ "Selected language: "+getLanguage()+". Translations should be reviewed by a qualified teacher.";
+ document.getElementById("lessonViewer").scrollIntoView({behavior:"smooth"});
+}
+
+function speakLesson() {
+ if(!currentLesson) return;
+ const utterance=new SpeechSynthesisUtterance(getLessonContent(currentLesson));
+ const languageCodes={English:"en-NG",Hausa:"ha-NG",Yoruba:"yo-NG",Igbo:"ig-NG"};
+ utterance.lang=languageCodes[getLanguage()];
+ speechSynthesis.cancel();
+ speechSynthesis.speak(utterance);
+}
+
+function stopSpeaking() {
+ speechSynthesis.cancel();
+}
+
+// ----------------------------
+// AI ASSISTANT
+// ----------------------------
+
+function askAI() {
+ const question=document.getElementById("question").value.trim();
+ const lang=document.getElementById("assistantLanguage").value;
+ const level=document.getElementById("classLevel").value;
+ if(!question) {
+  alert("Please enter a question first.");
+  return;
+ }
+
+ const response=document.getElementById("aiResponse");
+ response.style.display="block";
+ response.textContent="Thinking about your question...";
+
+ // Demo responses only. Replace this with a secure AI backend.
+ const q=question.toLowerCase();
+ let answer;
+
+ if(q.includes("multiplication") || q.includes("multiply")) {
+  answer="Multiplication is a quick way of adding the same number several times. Imagine you have 3 baskets, with 2 oranges in each basket. You have 2 + 2 + 2 = 6 oranges. So 3 × 2 = 6!";
+ } else if(q.includes("plant")) {
+  answer="A plant is a living thing. Plants need sunlight, water, air and nutrients to grow. Their roots take in water and their leaves help them make food.";
+ } else if(q.includes("addition") || q.includes("add")) {
+  answer="Addition means combining numbers. Imagine you have 2 mangoes and receive 3 more. Count them together: 2 + 3 = 5 mangoes!";
+ } else {
+  answer="That is a great question! Let's break it into smaller parts. "+question+" is something we can explore together. Ask your teacher to add a lesson about this topic, or connect the AI learning service to receive a personalised explanation.";
+ }
+
+ lastResponse=answer;
+ response.textContent="📖 "+answer+
+ "\n\nLearning level: "+level+
+ "\nSelected language: "+lang+
+ "\n\nDemo mode: this explanation is currently in English. A multilingual AI service is needed for reliable translation.";
+ document.getElementById("listenAnswer").style.display="inline-block";
+}
+
+function speakAnswer() {
+ if(!lastResponse) return;
+ const speech=new SpeechSynthesisUtterance(lastResponse);
+ speech.lang="en-NG";
+ speechSynthesis.cancel();
+ speechSynthesis.speak(speech);
+}
+
+function startVoice() {
+ const SpeechRecognition=window.SpeechRecognition || window.webkitSpeechRecognition;
+ if(!SpeechRecognition) {
+  alert("Voice input is not supported by this browser. Try Chrome or type your question.");
+  return;
+ }
+ const recognition=new SpeechRecognition();
+ recognition.lang="en-NG";
+ recognition.onresult=(event)=>{
+  document.getElementById("question").value=event.results[0][0].transcript;
+ };
+ recognition.start();
+}
+
+// ----------------------------
+// QUIZZES
+// ----------------------------
+
+function renderQuiz() {
+ const area=document.getElementById("quizArea");
+ area.innerHTML="";
+ document.getElementById("quizResult").textContent="";
+ currentAnswer="";
+ quizQuestions.forEach((item,index)=>{
+  const block=document.createElement("div");
+  block.className="field";
+  const heading=document.createElement("h3");
+  heading.textContent=(index+1)+". "+item.q;
+  block.append(heading);
+  item.options.forEach(option=>{
+   const btn=document.createElement("button");
+   btn.className="answer";
+   btn.textContent=option;
+   btn.onclick=()=>{
+    block.querySelectorAll(".answer").forEach(b=>b.classList.remove("selected"));
+    btn.classList.add("selected");
+    btn.dataset.selected="true";
+   };
+   block.append(btn);
+  });
+  area.append(block);
+ });
+ const submit=document.createElement("button");
+ submit.className="btn";
+ submit.textContent="Submit my answers";
+ submit.onclick=gradeQuiz;
+ area.append(submit);
+}
+
+function gradeQuiz() {
+ const blocks=document.querySelectorAll("#quizArea .field");
+ let score=0;
+ let answered=0;
+ blocks.forEach((block,index)=>{
+  const selected=block.querySelector('[data-selected="true"]');
+  if(selected) {
+   answered++;
+   if(selected.textContent===quizQuestions[index].answer) score++;
+  }
+ });
+ if(answered!==quizQuestions.length) {
+  alert("Please answer all the questions before submitting.");
+  return;
+ }
+ points+=score*10;
+ completed++;
+ localStorage.setItem("lb_points",points);
+ localStorage.setItem("lb_completed",completed);
+ document.getElementById("quizResult").innerHTML=
+ "<div class='chat'><h3>🎉 Well done!</h3>You scored "+score+
+ " out of "+quizQuestions.length+". You earned "+(score*10)+
+ " points. Keep practising!</div>";
+ updateStats();
+}
+
+// ----------------------------
+// TEACHER HUB
+// ----------------------------
+
+function createLesson() {
+ const title=document.getElementById("newTitle").value.trim();
+ const content=document.getElementById("newContent").value.trim();
+ if(!title || !content) {
+  alert("Please enter a lesson title and explanation.");
+  return;
+ }
+ const lesson={
+  title,
+  subject:document.getElementById("newSubject").value,
+  level:document.getElementById("newClass").value,
+  english:content,
+  Hausa:document.getElementById("hausaContent").value.trim(),
+  Yoruba:document.getElementById("yorubaContent").value.trim(),
+  Igbo:document.getElementById("igboContent").value.trim()
+ };
+ lessons.push(lesson);
+ localStorage.setItem("lb_lessons",JSON.stringify(lessons));
+ document.getElementById("publishMessage").textContent="✅ Lesson saved on this device!";
+ ["newTitle","newContent","hausaContent","yorubaContent","igboContent"].forEach(id=>{
+  document.getElementById(id).value="";
+ });
+ updateStats();
+ updateTeacher();
+}
+
+function updateTeacher() {
+ document.getElementById("teacherLessons").textContent=lessons.length;
+ document.getElementById("teacherAttempts").textContent=completed;
+}
+
+// ----------------------------
+// PROGRESS
+// ----------------------------
+
+function updateStats() {
+ document.getElementById("points").textContent=points;
+ document.getElementById("completed").textContent=completed;
+ document.getElementById("lessonCount").textContent=lessons.length;
+}
+
+function updateProgress() {
+ document.getElementById("progressPoints").textContent=points;
+ document.getElementById("progressCompleted").textContent=completed;
+ const percentage=Math.min(100,(completed/10)*100);
+ document.getElementById("progressBar").style.width=percentage+"%";
+ document.getElementById("progressText").textContent=completed+" quizzes completed. Your next milestone is 10!";
+ document.getElementById("encouragement").textContent=
+ completed===0 ? "Start your first quiz and begin your learning journey!" :
+ completed<5 ? "Fantastic start! Keep practising and discovering new things." :
+ "Amazing progress! You are becoming a confident learner.";
+}
+
+// INITIALISE
+renderLessons();
+updateStats();
+updateTeacher();
+</script>
+</body>
+</html>
